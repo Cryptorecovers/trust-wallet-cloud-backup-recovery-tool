@@ -1,0 +1,4 @@
+# Required for: AES-CTR decryption/export, scrypt on builds without
+# OpenSSL scrypt support, and the (default) fast Keccak backend.
+# Password recovery via MAC check alone works without it.
+pycryptodome>=3.10

@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "type": "mnemonic",
+  "id": "684c20dc-4ccc-47a8-8f35-e6c35412634a",
+  "name": "Trust Wallet",
+  "crypto": {
+    "ciphertext": "44e7db8d5db16e2fa0d764f5dc56e140c98aac6eaa60c70ab220e0f2560d312a441adcb8967799eb8e9e8a7e3d980927f2606a47f9fe95cfe0c2bfa36546976433f8aa1547c2c0d8a69921624a3e9534a78a058e2d247ba0a8d5d38be0",
+    "cipherparams": {
+      "iv": "37d17a60f618aab0b8e3af96082ba2a5"
+    },
+    "cipher": "aes-128-ctr",
+    "kdf": "scrypt",
+    "kdfparams": {
+      "dklen": 32,
+      "n": 16384,
+      "r": 8,
+      "p": 4
+    },
+    "mac": "f0c956ac2157cace165c503fd02564f507a50e84f8910c15893f61283bad0857"
+  },
+  "activeAccounts": [
+    {
+      "address": "0x9858EfFD232B4033E47d90003D41EC34EcaEda94",
+      "derivationPath": "m/44'/60'/0'/0/0",
+      "coin": 60,
+      "publicKey": "0437b0bb7a8288d38ed49a524b5dc98cff3eb5ca824c9f9dc0dfdb3d9cd600f299a6179912b7451c09896c4098eca7ce6b2e58330672795e847c4d6af44e024230"
+    }
+  ]
+}

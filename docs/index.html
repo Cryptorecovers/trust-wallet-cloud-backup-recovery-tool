@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>twrecover — Trust Wallet backup password recovery</title>
+<style>
+  :root {
+    --bg: #0b0f17;
+    --panel: #111827;
+    --panel-2: #0f172a;
+    --border: #1f2a3f;
+    --text: #e5e9f0;
+    --muted: #8b98ad;
+    --accent: #22d3ee;
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+  header.site {
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0d1522, var(--bg));
+    padding: 56px 0 48px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--accent);
+    border: 1px solid #164e63;
+    background: rgba(34, 211, 238, .08);
+    border-radius: 999px;
+    padding: 4px 14px;
+    margin-bottom: 18px;
+    letter-spacing: .3px;
+  }
+  h1 { margin: 0 0 10px; font-size: 44px; letter-spacing: -1px; }
+  h1 .key { color: var(--accent); }
+  .tagline { color: var(--muted); max-width: 640px; margin: 0 auto; font-size: 18px; }
+  .cta { margin-top: 26px; }
+  .cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: #06231c;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 22px;
+    margin: 0 6px;
+  }
+  .cta a.ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  h2 { font-size: 26px; letter-spacing: -.4px; margin: 0 0 6px; }
+  h2 .num { color: var(--accent); font-family: var(--mono); font-size: 18px; vertical-align: middle; margin-right: 10px; }
+  .sub { color: var(--muted); margin: 0 0 26px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 16px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .card .ico { font-size: 22px; }
+
+  pre {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.55;
+    overflow-x: auto;
+    color: #c9d4e3;
+    margin: 14px 0;
+  }
+  pre .c  { color: var(--muted); }
+  pre .g  { color: var(--green); }
+  pre .y  { color: var(--yellow); }
+  pre .b  { color: var(--accent); }
+  code {
+    font-family: var(--mono);
+    background: rgba(255,255,255,.06);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: .88em;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; }
+  td code { background: none; padding: 0; color: var(--accent); }
+
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: center; margin-top: 8px; }
+  .flow .step {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+  .flow .step b { color: var(--green); }
+  .flow .arrow { color: var(--muted); font-family: var(--mono); }
+
+  .warn {
+    border-left: 3px solid var(--yellow);
+    background: rgba(251,191,36,.06);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    color: #e8d9b0;
+    font-size: 14.5px;
+  }
+  footer { padding: 34px 0 60px; text-align: center; color: var(--muted); font-size: 14px; }
+  .term-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .dot-r { background: #f7615f; } .dot-y { background: #f3bd4f; } .dot-g { background: #63c74d; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <span class="badge">🔑 By Crypto Recovers · cryptorecovers.com</span>
+    <h1><span class="key">twrecover</span> — v1.4.0</h1>
+    <p class="tagline">Offline password recovery for your Trust Wallet
+      backup file (.json). Tries your candidate passwords — fast, safe,
+      and 100% offline — until the wallet opens.</p>
+    <div class="cta-row">
+      <a href="#usage">Try it now</a>
+      <a class="ghost" href="#how">How it works</a>
+      <a class="ghost" href="#gpu">GPU / hashcat</a>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <h2><span class="num">01</span>What it does</h2>
+    <p class="sub">Forgot the password to a wallet export? Recover it on
+      your own machine — no uploads, no third parties, no phone home.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🔓</div><h3>Recovers the password</h3>
+        <p>Built for the password-protected .json backups the Trust Wallet
+        app exports when you back up a wallet.</p></div>
+      <div class="card"><div class="ico">🧂</div><h3>Both KDFs supported</h3>
+        <p>scrypt (Trust Wallet default) and PBKDF2-HMAC-SHA256, both
+        verified against the keystore's MAC — zero false positives.</p></div>
+      <div class="card"><div class="ico">🧠</div><h3>Three attack modes</h3>
+        <p>Explicit guesses, dictionary wordlists with smart mutations
+        (digits · years · leetspeak…), and brute force — combinable.</p></div>
+      <div class="card"><div class="ico">⚙️</div><h3>All cores, live stats</h3>
+        <p>Parallel across your CPU with progress, rate and ETA. Safe to
+        Ctrl-C any time. Runs on plain Python 3.9+, no install needed.</p></div>
+      <div class="card"><div class="ico">✅</div><h3>Proven found</h3>
+        <p>Found keys are cross-checked against the wallet's Ethereum
+        address before reporting success — private keys and mnemonic
+        (“cloud backup”) files alike.</p></div>
+      <div class="card"><div class="ico">🚀</div><h3>GPU bridge</h3>
+        <p>One command exports the keystore in hashcat format for
+        GPU-powered cracking (modes 15600 / 15700).</p></div>
+    </div>
+    <p class="sub" style="margin-top:14px">Also ships as a complete suite:
+      trustwallet_backup_inspect · verify · decrypt · recover +
+      trustwallet2hashcat, plus <code>--batch</code> to scan an entire
+      folder of backups. Legacy backups with an <b>empty salt</b> (which
+      hashcat cannot load — issue #4338) are recovered natively.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2><span class="num">02</span>How it works</h2>
+    <p class="sub">Every candidate password must pay the same KDF cost —
+      that's what makes guessing slow by design. The check itself is
+      cryptographically exact.</p>
+
+    <div class="flow">
+      <div class="step"><b>1 · Derive</b><br>scrypt / PBKDF2(password)</div>
+      <span class="arrow">→</span>
+      <div class="step"><b>2 · Verify MAC</b><br>Keccak-256(key[16:32] ‖ ciphertext)</div>
+      <span class="arrow">→</span>
+      <div class="step"><b>3 · Decrypt</b><br>AES-128-CTR → private key / phrase</div>
+      <span class="arrow">→</span>
+      <div class="step"><b>4 · Confirm</b><br>address == stored address (BIP39/BIP44)</div>
+    </div>
+    <p class="sub" style="margin-top:14px">Verified against backup files in
+      the exact layout Trust Wallet's open-source core writes — including
+      mnemonic cloud backups, whose recovery phrase decrypts to the
+      published test address 0x9858EfFD232B4033E47d90003D41EC34EcaEda94.</p>
+
+    <div class="grid" style="margin-top:22px">
+      <div class="card"><h3>Why no false positives?</h3>
+        <p>The MAC (message-authentication code) stored in the file can only
+        match if the derived key is byte-identical — which means the password
+        is byte-identical. A match is mathematical proof, not a guess.</p></div>
+      <div class="card"><h3>Why is it slow?</h3>
+        <p>KDF parameters (e.g. scrypt n=262144) are set so each attempt costs
+        50–150 ms of real CPU+memory work. Nobody can bypass that — instead,
+        choose smarter candidates and parallelize your cores.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="usage">
+  <div class="wrap">
+    <h2><span class="num">03</span>Using it</h2>
+    <p class="sub">One file, zero dependencies for PBKDF2 wallets.
+      Copy-paste these into your terminal.</p>
+
+    <h3>Quick check of a remembered password</h3>
+<pre><span class="c">$</span> twrecover -k wallet.json -p "mybirthday123"
+<span class="c">keystore: kdf=scrypt, n=16384 r=8 p=4, dklen=32, cipher=aes-128-ctr, address=0x2b5ad5…6cf</span>
+<span class="c">one attempt: 54.2 ms  (18/s per worker)</span>
+<span class="g">[+] password found in direct (source: 1s)</span>
+Password: <span class="b">mybirthday123</span>
+<span class="g">[+] decrypted payload: private-key (32 bytes)</span>
+derived address: 0x2b5ad5c4795c026514f8317c7a215e218dccd6cf <span class="g">(match)</span>
+<span class="y">recovered by Crypto Recovers — https://cryptorecovers.com</span></pre>
+
+    <h3>Dictionary attack with mutations</h3>
+<pre><span class="c"># words.txt contains:  sunflower   dragon   karen97   ...</span>
+<span class="b">$</span> twrecover -k wallet.json -l my-words.txt -r medium
+<span class="c">[ 32.4%] 1,234,567/3,812,400 candidates | 141/s | ETA 5h 03m</span>
+<span class="g">[+] password found in wordlist (2h 11m)</span>
+Password: <span class="b">sunFlower42!</span></pre>
+
+    <h3>Brute force a known shape</h3>
+<pre><span class="b">$</span> twrecover -k wallet.json -a abcdefghijklmnopqrstuvwxyz0123456789 \
+           --min-length 4 --max-length 4</pre>
+
+    <h3>Hand off to a GPU (hashcat)</h3>
+<pre><span class="b">$</span> twrecover -k wallet.json --export-hashcat wallet.15700
+<span class="b">$</span> hashcat -m 15700 wallet.15700 wordlist.txt</pre>
+
+    <h3>Scan a whole folder</h3>
+<pre><span class="b">$</span> twrecover --batch ~/backups -l words.txt -r basic
+<span class="g">[+]</span> batch done: 2 of 3 file(s) recovered</pre>
+
+    <p class="sub" style="margin-top:22px">Exit codes: <code>0</code> found ·
+      <code>1</code> not found · <code>2</code> usage/keystore error ·
+      <code>130</code> interrupted. Full reference in the README.</p>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="wrap">
+    <h2><span class="num">04</span>Mutation rulesets</h2>
+    <p class="sub">Each word in your wordlist is expanded into many real-life
+      password candidates.</p>
+    <table>
+      <tr><th>Rule set</th><th>Adds</th><th>Candidates/word</th></tr>
+      <tr><td><code>none</code></td><td>raw words only</td><td>1</td></tr>
+      <tr><td><code>typos</code></td><td>bt-recovery-style single typos of each hint — deletions, adjacent swaps, doublings, inserted 's'</td><td>~4 × length</td></tr>
+      <tr><td><code>basic</code></td><td>case variants, digit suffixes 0–99, years 1990–2026, symbols, doubled, reversed, Unicode NFC/NFKD</td><td>~302</td></tr>
+      <tr><td><code>medium</code> (default)</td><td>+ leetspeak (p455w0rd), leet+digits</td><td>~324</td></tr>
+      <tr><td><code>full</code></td><td>+ 3-digit suffixes, leet with 2-digit suffixes</td><td>~2,324</td></tr>
+      <tr><td><code>leet</code></td><td>leet-heavy expansion</td><td>~561</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="gpu">
+  <div class="wrap">
+    <h2><span class="num">05</span>Performance &amp; GPU</h2>
+    <p class="sub">Know before you burn compute. <code>--benchmark</code>
+      measures your exact machine and prints per-worker RAM usage.</p>
+    <table>
+      <tr><th>Keystore KDF</th><th>ms/attempt</th><th>guesses/s (1 core)</th></tr>
+      <tr><td>scrypt n=16384 (Trust default)</td><td>~50–90</td><td>~11–20</td></tr>
+      <tr><td>scrypt n=262144</td><td>~120–160</td><td>~6–8</td></tr>
+      <tr><td>pbkdf2 c=100000</td><td>~40</td><td>~25</td></tr>
+    </table>
+    <p style="color:var(--muted); font-size:14.5px">Multipliers: all-core
+    throughput ≈ single-core rate × cores. When that isn't enough,
+    <code>--export-hashcat</code> produces the exact hashcat "Ethereum
+    Wallet" format (verified against hashcat's own module source), so a GPU
+    can take over with <code>hashcat -m 15700</code> / <code>-m 15600</code>.</p>
+  </div>
+</section>
+
+<footer>
+  <p>🔑 twrecover 1.4.0 · MIT license · Python 3.9+</p>
+  <p>Made by <b>Crypto Recovers</b> — <a href="https://cryptorecovers.com">cryptorecovers.com</a> ·
+    <a href="https://github.com/Cryptorecovers/trust-wallet-backup-password-recovery-tool">Source on GitHub</a></p>
+  <p style="font-size:13px; color:#5d697d">Only use on wallet files you own.</p>
+</footer>
+
+</body>
+</html>

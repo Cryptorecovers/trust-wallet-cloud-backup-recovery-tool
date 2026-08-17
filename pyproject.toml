@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "twrecover"
+version = "1.4.0"
+description = "Offline password recovery for Trust Wallet backup files (.json)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["trust-wallet", "keystore", "password-recovery", "ethereum", "scrypt", "pbkdf2"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+    "Topic :: Utilities",
+]
+
+[project.optional-dependencies]
+crypto = ["pycryptodome>=3.10"]
+
+[project.urls]
+Homepage = "https://cryptorecovers.com"
+Repository = "https://github.com/Cryptorecovers/trust-wallet-backup-password-recovery-tool"
+
+[project.scripts]
+twrecover = "twrecover:main"
+trustwallet_backup_inspect = "trustwallet_backup_inspect:main"
+trustwallet_backup_verify = "trustwallet_backup_verify:main"
+trustwallet_backup_decrypt = "trustwallet_backup_decrypt:main"
+trustwallet_backup_recover = "trustwallet_backup_recover:main"
+trustwallet2hashcat = "trustwallet2hashcat:main"
+
+[tool.setuptools]
+py-modules = ["twrecover", "trustwallet_backup_inspect",
+              "trustwallet_backup_verify", "trustwallet_backup_decrypt",
+              "trustwallet_backup_recover", "trustwallet2hashcat"]
