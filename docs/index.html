@@ -143,8 +143,8 @@
     <span class="badge">🔑 By Crypto Recovers · cryptorecovers.com</span>
     <h1><span class="key">twrecover</span> — v1.4.0</h1>
     <p class="tagline">Offline password recovery for your Trust Wallet
-      backup file (.json). Tries your candidate passwords — fast, safe,
-      and 100% offline — until the wallet opens.</p>
+      backup file (.json). Tries your candidate passwords, fast, safe,
+      and 100% offline, until the wallet opens.</p>
     <div class="cta-row">
       <a href="#usage">Try it now</a>
       <a class="ghost" href="#how">How it works</a>
@@ -157,23 +157,23 @@
   <div class="wrap">
     <h2><span class="num">01</span>What it does</h2>
     <p class="sub">Forgot the password to a wallet export? Recover it on
-      your own machine — no uploads, no third parties, no phone home.</p>
+      your own machine: no uploads, no third parties, no phone home.</p>
     <div class="grid">
       <div class="card"><div class="ico">🔓</div><h3>Recovers the password</h3>
         <p>Built for the password-protected .json backups the Trust Wallet
         app exports when you back up a wallet.</p></div>
       <div class="card"><div class="ico">🧂</div><h3>Both KDFs supported</h3>
         <p>scrypt (Trust Wallet default) and PBKDF2-HMAC-SHA256, both
-        verified against the keystore's MAC — zero false positives.</p></div>
+        verified against the keystore's MAC, so zero false positives.</p></div>
       <div class="card"><div class="ico">🧠</div><h3>Three attack modes</h3>
         <p>Explicit guesses, dictionary wordlists with smart mutations
-        (digits · years · leetspeak…), and brute force — combinable.</p></div>
+        (digits · years · leetspeak…), and brute force, all combinable.</p></div>
       <div class="card"><div class="ico">⚙️</div><h3>All cores, live stats</h3>
         <p>Parallel across your CPU with progress, rate and ETA. Safe to
         Ctrl-C any time. Runs on plain Python 3.9+, no install needed.</p></div>
       <div class="card"><div class="ico">✅</div><h3>Proven found</h3>
         <p>Found keys are cross-checked against the wallet's Ethereum
-        address before reporting success — private keys and mnemonic
+        address before reporting success, for private keys and mnemonic
         (“cloud backup”) files alike.</p></div>
       <div class="card"><div class="ico">🚀</div><h3>GPU bridge</h3>
         <p>One command exports the keystore in hashcat format for
@@ -183,7 +183,7 @@
       trustwallet_backup_inspect · verify · decrypt · recover +
       trustwallet2hashcat, plus <code>--batch</code> to scan an entire
       folder of backups. Legacy backups with an <b>empty salt</b> (which
-      hashcat cannot load — issue #4338) are recovered natively.</p>
+      hashcat cannot load, issue #4338) are recovered natively.</p>
   </div>
 </section>
 
@@ -301,7 +301,7 @@ Password: <span class="b">sunFlower42!</span></pre>
 <footer>
   <p>🔑 twrecover 1.4.0 · MIT license · Python 3.9+</p>
   <p>Made by <b>Crypto Recovers</b> — <a href="https://cryptorecovers.com">cryptorecovers.com</a> ·
-    <a href="https://github.com/Cryptorecovers/trust-wallet-backup-password-recovery-tool">Source on GitHub</a></p>
+    <a href="https://github.com/Cryptorecovers/trust-wallet-cloud-backup-recovery-tool">Source on GitHub</a></p>
   <p style="font-size:13px; color:#5d697d">Only use on wallet files you own.</p>
 </footer>
 

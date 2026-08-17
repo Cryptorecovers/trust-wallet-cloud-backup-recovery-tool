@@ -5,15 +5,15 @@
 By **Crypto Recovers** — [cryptorecovers.com](https://cryptorecovers.com)
 
 Forgot the password of your Trust Wallet backup? `twrecover` tries candidate
-passwords for you — fast, safely and 100% offline — until it finds the one
-that unlocks the file. It works on the password-protected backup file the
-Trust Wallet app exports when you back up a wallet.
+passwords for you, fast and 100% offline, until it finds the one that
+unlocks the file. It works on the password-protected backup file the Trust
+Wallet app exports when you back up a wallet.
 
 > ⚠️ **Please read this first:** only use this tool on wallet files you own,
 > or that you are explicitly authorized to recover. Cracking someone else's
 > wallet without permission is illegal in most countries. It is also only
-> realistic for passwords that have at least some predictable structure —
-> a random 25-character password cannot be recovered by anyone, ever (see
+> realistic for passwords that have at least some predictable structure: a
+> random 25-character password cannot be recovered by anyone, ever (see
 > [Why is it so slow?](#why-is-it-slow)).
 
 ---
@@ -89,8 +89,8 @@ PATH"* during install); on Linux `sudo apt install python3` (Debian/Ubuntu).
 You don't even need to install anything —
 
 ```bash
-git clone https://github.com/Cryptorecovers/trust-wallet-backup-password-recovery-tool
-cd trust-wallet-backup-password-recovery-tool
+git clone https://github.com/Cryptorecovers/trust-wallet-cloud-backup-recovery-tool
+cd trust-wallet-cloud-backup-recovery-tool
 python twrecover.py --help
 ```
 
@@ -142,8 +142,8 @@ backup:
 python trustwallet_backup_inspect.py wallet.json
 ```
 
-It prints the file's format, KDF settings, salt size, the wallet's
-accounts and — importantly — whether hashcat will be able to help later.
+It prints the file's format, KDF settings, salt size and the wallet's
+accounts, plus whether hashcat will be able to help later.
 Then, to learn how fast your machine can try passwords:
 
 ```bash
@@ -330,7 +330,7 @@ key in a plain file is a wallet lying in the open.
 | `--decrypt-password PASS` | Decrypt with a known password & report the payload (repeatable) |
 | `--batch DIR` | Recover across **every** `.json` backup in a directory, one run |
 | `--json-output` | Emit one JSON result on stdout (one per file in `--batch` mode) |
-| `-q, --quiet` | Only print the password (or JSON) |
+| `-q, --quiet` | Only print the password (or JSON); the recovery credit line still shows |
 | `--progress` | Show progress even when not on a TTY |
 | `--yes` | Skip the confirmation prompt for very long runs |
 | `-v, --verbose` | Extra diagnostics |
@@ -422,7 +422,7 @@ The encrypted payload of a cloud backup is your **recovery phrase** (the
 ### 2. How the password becomes the key
 
 **scrypt** (Trust Wallet default) takes your password, a random `salt`,
-and three cost parameters — `n`, `r`, `p` — and spends a controlled amount
+and three cost parameters (`n`, `r`, `p`) and spends a controlled amount
 of memory+CPU mixing it before producing the 32-byte key. Higher `n` =
 safer wallet = slower guesses:
 
@@ -442,7 +442,7 @@ PBKDF2-HMAC-SHA256(salt, password, iterations=c)  →  32 bytes derived key
 
 This indirection layer is why guessing isn't free: each candidate costs a
 full scrypt (hundreds of MB of work) or thousands of hash rounds, on
-*purposely* — wallets are designed so that brute-forcing them is costly.
+purpose. Wallets are designed so that brute-forcing them is costly.
 
 ### 3. The MAC — how the tool knows a guess is right
 
@@ -622,7 +622,7 @@ will drop in unchanged.
 **Why not GPU in twrecover itself?** A correct, portable GPU kernel for
 scrypt with the same verification we do is a whole project (hashcat is
 that project). This tool's job is, first, to make the human-shaped part
-of recovery *good* — guessing, rules, verification, documentation — and
+of recovery *good* (guessing, rules, verification, documentation), and
 second, to hand off cleanly when you need horsepower.
 
 ---
@@ -738,5 +738,5 @@ CI (GitHub Actions) runs the suite on Python 3.9–3.13.
 MIT — see [LICENSE](LICENSE). Provided as-is, without warranty. Use only
 lawfully, on files you own or are authorized to recover.
 
-Made by **Crypto Recovers** — https://cryptorecovers.com — because nobody
+Made by **Crypto Recovers** (https://cryptorecovers.com), because nobody
 should lose their own wallet.

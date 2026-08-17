@@ -26,7 +26,7 @@ def main():
         print(__doc__.strip())
         return 0
     if len(args) < 2:
-        print(__doc__.split("Usage:")[1].split("Example:")[0].strip())
+        print(__doc__.split("Usage:")[1].split("Part of")[0].strip())
         return 2
     file_arg = args[0]
     cli = ["-k", file_arg]

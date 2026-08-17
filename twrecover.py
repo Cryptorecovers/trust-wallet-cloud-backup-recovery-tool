@@ -103,6 +103,10 @@ class UI:
         if not self.quiet:
             print(self._c(text, _BOLD + _BLUE), file=sys.stderr)
 
+    def brand(self, text):
+        """Always-on line (survives --quiet): the recovery credit."""
+        print(text, file=sys.stderr)
+
 
 # ---------------------------------------------------------------------------
 # Keccak-256 (pycryptodome when available, otherwise pure Python)
@@ -1332,7 +1336,7 @@ def _scan_keystore(ks, label, sources, total, args, ui, threads, auto_confirm):
 
     if found is not None:
         ui.ok("password found in %s (source: %s)" % (found_source, _fmt_duration(elapsed)))
-        ui.info("recovered by %s \u2014 %s" % (BRAND, BRAND_URL))
+        ui.brand("recovered by %s \u2014 %s" % (BRAND, BRAND_URL))
         result["password"] = found
         result["source"] = found_source
         extra = _inspect_and_report(ks, found, args, ui)

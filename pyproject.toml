@@ -25,7 +25,7 @@ crypto = ["pycryptodome>=3.10"]
 
 [project.urls]
 Homepage = "https://cryptorecovers.com"
-Repository = "https://github.com/Cryptorecovers/trust-wallet-backup-password-recovery-tool"
+Repository = "https://github.com/Cryptorecovers/trust-wallet-cloud-backup-recovery-tool"
 
 [project.scripts]
 twrecover = "twrecover:main"

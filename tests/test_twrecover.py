@@ -441,10 +441,12 @@ class TestCLI(unittest.TestCase):
         self.assertIn("Password: sun", out)
 
     def test_quiet_still_prints_password(self):
-        code, out, _ = run_cli(["-k", fixture_path("scrypt_keystore.json"),
-                                "-p", "sunflower", "-q"])
+        code, out, err = run_cli(["-k", fixture_path("scrypt_keystore.json"),
+                                  "-p", "sunflower", "-q"])
         self.assertEqual(code, 0)
         self.assertEqual(out.strip(), "Password: sunflower")
+        # the recovery credit survives --quiet
+        self.assertIn("Crypto Recovers", err)
 
     def test_json_output(self):
         code, out, _ = run_cli(["-k", fixture_path("scrypt_keystore.json"),
