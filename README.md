@@ -51,9 +51,9 @@ Wallet app exports when you back up a wallet.
   - brute force over a custom alphabet (`-a`)
 - 🗄️ Runs **parallel across all your CPU cores** with live progress, speed
   and ETA; safe to interrupt any time (Ctrl-C)
-- ✅ **Cryptographically zero false positives** — every candidate is verified
-  via the keystore's MAC, and the recovered key is cross-checked against the
-  wallet's Ethereum address
+- ✅ **Effectively zero false positives** — every candidate is verified
+  against the keystore's MAC (a 256-bit keccak check), and the recovered key
+  is cross-checked against the wallet's Ethereum address
 - 🧾 Native support for **mnemonic (“cloud backup”) files** — the encrypted
   backup you upload to iCloud/Google Drive. The payload is your recovery
   phrase: twrecover decrypts it, derives the Ethereum address via
@@ -454,9 +454,11 @@ MAC = Keccak-256( derived_key[16:32]  ||  ciphertext )
 ```
 
 The file stores the correctly computed MAC. For every candidate password
-we re-derive the key and recompute this MAC; if it matches — **the password
-is correct, mathematically proven**. No false positives, ever. (This is the
-same check every wallet app performs when you unlock it.)
+we re-derive the key and recompute this MAC; if it matches, the password is
+correct — **cryptographically confirmed**. False positives are effectively
+impossible: matching the 256-bit keccak MAC means the derived key is
+byte-identical, unless a keccak-256 collision (~2⁻²⁵⁶) is involved. (This
+is the same check every wallet app performs when you unlock it.)
 
 ### 4. Decryption & the address cross-check
 
@@ -603,8 +605,8 @@ module source, so it parses without repackaging. Two caveats:
 - hashcat requires the scrypt `n` to be divisible by 1024 (Trust Wallet
   defaults qualify); `twrecover` warns when a file doesn't.
 - hashcat reports a *cracked password* when the MAC matches — it does not
-  verify the Ethereum address. A MAC match is already definitive, but
-  double-check by running the recovered password through `twrecover
+  verify the Ethereum address. A MAC match already confirms the password,
+  but double-check by running the recovered password through `twrecover
   -p` on the original JSON.
 
 **One more, important: legacy empty-salt backups.** Older Trust Wallet

@@ -164,7 +164,8 @@
         app exports when you back up a wallet.</p></div>
       <div class="card"><div class="ico">🧂</div><h3>Both KDFs supported</h3>
         <p>scrypt (Trust Wallet default) and PBKDF2-HMAC-SHA256, both
-        verified against the keystore's MAC, so zero false positives.</p></div>
+        verified against the keystore's MAC, so false positives are
+        effectively impossible.</p></div>
       <div class="card"><div class="ico">🧠</div><h3>Three attack modes</h3>
         <p>Explicit guesses, dictionary wordlists with smart mutations
         (digits · years · leetspeak…), and brute force, all combinable.</p></div>
@@ -211,8 +212,9 @@
     <div class="grid" style="margin-top:22px">
       <div class="card"><h3>Why no false positives?</h3>
         <p>The MAC (message-authentication code) stored in the file can only
-        match if the derived key is byte-identical — which means the password
-        is byte-identical. A match is mathematical proof, not a guess.</p></div>
+        match only if the derived key is byte-identical — which means the
+        password is byte-identical. A match is cryptographic confirmation,
+        not a guess.</p></div>
       <div class="card"><h3>Why is it slow?</h3>
         <p>KDF parameters (e.g. scrypt n=262144) are set so each attempt costs
         50–150 ms of real CPU+memory work. Nobody can bypass that — instead,
