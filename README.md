@@ -741,4 +741,4 @@ MIT — see [LICENSE](LICENSE). Provided as-is, without warranty. Use only
 lawfully, on files you own or are authorized to recover.
 
 Made by **Crypto Recovers** (https://cryptorecovers.com), because nobody
-should lose their own wallet.
+should lose access to their own wallet.
